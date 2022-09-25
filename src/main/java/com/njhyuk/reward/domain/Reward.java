@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Reward {
     @Id
-    @Column(name = "rewardDate")
+    @Column(name = "reward_date")
     private LocalDate rewardDate;
     private Integer rewardCount;
 
