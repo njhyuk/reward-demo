@@ -2,6 +2,7 @@ package com.njhyuk.reward.service;
 
 import com.njhyuk.reward.common.configuration.RewardConfiguration;
 import com.njhyuk.reward.common.exception.ClosedRewardException;
+import com.njhyuk.reward.common.exception.DuplicatedRewardException;
 import com.njhyuk.reward.domain.RewardBenefit;
 import com.njhyuk.reward.domain.RewardBenefitRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,5 +52,19 @@ class RewardServiceTest {
         }
 
         assertThrows(ClosedRewardException.class, () -> rewardService.applyReword(rewardDateTime, 11L));
+    }
+
+    @Test
+    @DisplayName("같은날 보상이 이미 지급된 유저는 보상이 지급되지 않는다.")
+    void failApplyRewordWhenBenefitedUser() {
+        rewardBenefitRepository.save(
+            RewardBenefit.builder()
+                .userId(10L)
+                .point(100)
+                .createdAt(rewardDateTime)
+                .consecutiveCount(1)
+                .build()
+        );
+        assertThrows(DuplicatedRewardException.class, () -> rewardService.applyReword(rewardDateTime, 10L));
     }
 }

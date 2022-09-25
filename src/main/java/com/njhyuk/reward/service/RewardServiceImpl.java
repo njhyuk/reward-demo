@@ -2,6 +2,7 @@ package com.njhyuk.reward.service;
 
 import com.njhyuk.reward.common.configuration.RewardConfiguration;
 import com.njhyuk.reward.common.exception.ClosedRewardException;
+import com.njhyuk.reward.common.exception.DuplicatedRewardException;
 import com.njhyuk.reward.domain.Reward;
 import com.njhyuk.reward.domain.RewardBenefit;
 import com.njhyuk.reward.domain.RewardBenefitRepository;
@@ -28,10 +29,16 @@ public class RewardServiceImpl implements RewardService {
     @Override
     @Transactional
     public RewardBenefit applyReword(LocalDateTime rewardDateTime, Long userId) {
-        Integer rewardCount = getRewardCount(rewardDateTime);
+        LocalDateTime startOfDay = rewardDateTime.with(LocalTime.of(0, 0, 0));
+        LocalDateTime endOfDay = rewardDateTime.with(LocalTime.of(23, 59, 59));
 
+        Integer rewardCount = rewardBenefitRepository.countByCreatedAtBetween(startOfDay, endOfDay);
         if (rewardCount >= 10) {
             throw new ClosedRewardException("선착순 보상이 마감되었습니다.");
+        }
+
+        if (rewardBenefitRepository.existsByUserIdAndCreatedAtBetween(userId, startOfDay, endOfDay)) {
+            throw new DuplicatedRewardException("당일 중복 응모는 불가능합니다.");
         }
 
         RewardBenefit rewardBenefit = RewardBenefit.builder()
@@ -42,12 +49,5 @@ public class RewardServiceImpl implements RewardService {
             .build();
 
         return rewardBenefitRepository.save(rewardBenefit);
-    }
-
-    private Integer getRewardCount(LocalDateTime rewardDateTime) {
-        return rewardBenefitRepository.countByCreatedAtBetween(
-            rewardDateTime.with(LocalTime.of(0, 0, 0)),
-            rewardDateTime.with(LocalTime.of(23, 59, 59))
-        );
     }
 }
