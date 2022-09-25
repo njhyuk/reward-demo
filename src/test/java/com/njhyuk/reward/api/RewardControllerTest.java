@@ -5,9 +5,10 @@ import com.njhyuk.reward.domain.RewardBenefit;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -45,16 +46,14 @@ class RewardControllerTest extends AbstractRestDocControllerTest {
     @Test
     @DisplayName("보상 지급")
     void applyReward() throws Exception {
-        LocalDateTime now = LocalDateTime.of(2022, 10, 1, 0, 1, 1);
-
         RewardBenefit rewardBenefit = RewardBenefit.builder()
             .userId(10L)
             .point(100)
-            .createdAt(now)
+            .rewardedAt(LocalDateTime.now())
             .consecutiveCount(1)
             .build();
 
-        when(rewardService.applyReword(now, 10L))
+        when(rewardService.applyReword(any(), anyLong()))
             .thenReturn(rewardBenefit);
 
         this.mockMvc.perform(

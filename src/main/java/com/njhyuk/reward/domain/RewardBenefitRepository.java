@@ -4,14 +4,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Repository
 public interface RewardBenefitRepository extends JpaRepository<RewardBenefit, Long> {
-    Integer countByCreatedAtBetween(LocalDateTime startCreatedAt, LocalDateTime endCreatedAt);
+    Integer countByRewardedAtBetween(LocalDateTime startCreatedAt, LocalDateTime endCreatedAt);
 
-    Boolean existsByUserIdAndCreatedAtBetween(
-        Long userId,
-        LocalDateTime startCreatedAt,
-        LocalDateTime endCreatedAt
-    );
+    Optional<RewardBenefit> findFirstByUserIdOrderByIdDesc(Long userId);
 }

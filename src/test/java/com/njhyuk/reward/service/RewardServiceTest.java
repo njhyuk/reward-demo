@@ -34,7 +34,7 @@ class RewardServiceTest {
     @DisplayName("선착순 10명인 경우 보상을 지급한다.")
     void applyRewordWhenFirstArrivals() {
         RewardBenefit rewardBenefit = rewardService.applyReword(rewardDateTime, 10L);
-        assertTrue(rewardBenefit.getPoint() > 0);
+        assertEquals(100, rewardBenefit.getPoint());
     }
 
     @Test
@@ -45,7 +45,7 @@ class RewardServiceTest {
                 RewardBenefit.builder()
                     .userId(userId)
                     .point(100)
-                    .createdAt(rewardDateTime)
+                    .rewardedAt(rewardDateTime)
                     .consecutiveCount(1)
                     .build()
             );
@@ -61,10 +61,70 @@ class RewardServiceTest {
             RewardBenefit.builder()
                 .userId(10L)
                 .point(100)
-                .createdAt(rewardDateTime)
+                .rewardedAt(rewardDateTime)
                 .consecutiveCount(1)
                 .build()
         );
         assertThrows(DuplicatedRewardException.class, () -> rewardService.applyReword(rewardDateTime, 10L));
+    }
+
+    @Test
+    @DisplayName("3일 연속 성공한경우 300포인트를 받는다.")
+    void additionalPointWhen3InARow() {
+        rewardBenefitRepository.save(
+            RewardBenefit.builder()
+                .userId(10L)
+                .point(100)
+                .rewardedAt(rewardDateTime.minusDays(1))
+                .consecutiveCount(2)
+                .build()
+        );
+        RewardBenefit rewardBenefit = rewardService.applyReword(rewardDateTime, 10L);
+        assertEquals(300, rewardBenefit.getPoint());
+    }
+
+    @Test
+    @DisplayName("5일 연속 성공한경우 500포인트를 받는다.")
+    void additionalPointWhen5InARow() {
+        rewardBenefitRepository.save(
+            RewardBenefit.builder()
+                .userId(10L)
+                .point(100)
+                .rewardedAt(rewardDateTime.minusDays(1))
+                .consecutiveCount(4)
+                .build()
+        );
+        RewardBenefit rewardBenefit = rewardService.applyReword(rewardDateTime, 10L);
+        assertEquals(500, rewardBenefit.getPoint());
+    }
+
+    @Test
+    @DisplayName("10일 연속 성공한경우 1000포인트를 받는다.")
+    void additionalPointWhen10InARow() {
+        rewardBenefitRepository.save(
+            RewardBenefit.builder()
+                .userId(10L)
+                .point(100)
+                .rewardedAt(rewardDateTime.minusDays(1))
+                .consecutiveCount(9)
+                .build()
+        );
+        RewardBenefit rewardBenefit = rewardService.applyReword(rewardDateTime, 10L);
+        assertEquals(1000, rewardBenefit.getPoint());
+    }
+
+    @Test
+    @DisplayName("10일 이상 성공한 경우 1회부터 다시 시작한다.")
+    void additionalPointWhenExceeding10InARow() {
+        rewardBenefitRepository.save(
+            RewardBenefit.builder()
+                .userId(10L)
+                .point(100)
+                .rewardedAt(rewardDateTime.minusDays(1))
+                .consecutiveCount(10)
+                .build()
+        );
+        RewardBenefit rewardBenefit = rewardService.applyReword(rewardDateTime, 10L);
+        assertEquals(100, rewardBenefit.getPoint());
     }
 }

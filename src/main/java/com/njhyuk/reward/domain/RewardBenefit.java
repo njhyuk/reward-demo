@@ -23,6 +23,8 @@ public class RewardBenefit {
     private Long id;
     private Long userId;
     private Integer point;
-    private LocalDateTime createdAt;
+    private LocalDateTime rewardedAt;
     private Integer consecutiveCount;
+
+    public static final RewardBenefit EMPTY = new RewardBenefit(0L, 0L, 0, LocalDateTime.MIN, 0);
 }
