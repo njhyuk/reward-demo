@@ -4,6 +4,7 @@ import com.njhyuk.reward.common.configuration.RewardConfiguration;
 import com.njhyuk.reward.common.exception.ClosedRewardException;
 import com.njhyuk.reward.common.exception.DuplicatedRewardException;
 import com.njhyuk.reward.domain.Reward;
+import com.njhyuk.reward.domain.RewardCalculator;
 import com.njhyuk.reward.domain.RewardHistory;
 import com.njhyuk.reward.domain.RewardHistoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +53,7 @@ public class RewardServiceImpl implements RewardService {
         RewardHistory rewardHistory = RewardHistory.builder()
             .userId(userId)
             .consecutiveCount(consecutiveCount)
-            .point(calculatePoint(consecutiveCount))
+            .point(RewardCalculator.calculatePoint(consecutiveCount))
             .rewardedAt(rewardDateTime)
             .build();
 
@@ -85,16 +86,5 @@ public class RewardServiceImpl implements RewardService {
     private boolean compareDuplicatedReward(RewardHistory lastRewardHistory, LocalDateTime rewardDateTime) {
         return lastRewardHistory.getRewardedAt().toLocalDate()
             .isEqual(rewardDateTime.toLocalDate());
-    }
-
-    private int calculatePoint(Integer consecutiveCount) {
-        int validCount = consecutiveCount % 10;
-
-        return switch (validCount) {
-            case 3 -> 300;
-            case 5 -> 500;
-            case 0 -> 1000;
-            default -> 100;
-        };
     }
 }
