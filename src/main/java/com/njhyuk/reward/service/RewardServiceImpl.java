@@ -61,7 +61,7 @@ public class RewardServiceImpl implements RewardService {
 
     @Override
     public List<RewardHistory> getRewardHistories(LocalDate rewardDate) {
-        return rewardHistoryRepository.findByRewardedAtBetween(
+        return rewardHistoryRepository.findByRewardedAtBetweenOrderByRewardedAt(
             rewardDate.atTime(0, 0, 0),
             rewardDate.atTime(23, 59, 59)
         );

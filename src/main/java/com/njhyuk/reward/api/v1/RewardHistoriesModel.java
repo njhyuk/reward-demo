@@ -15,7 +15,7 @@ public class RewardHistoriesModel {
     public static RewardHistoriesModel from(List<RewardHistory> rewardHistories) {
         return new RewardHistoriesModel(
             rewardHistories.stream()
-                .map(v -> new RewardHistoryModel(v.getUserId(), v.getPoint()))
+                .map(v -> new RewardHistoryModel(v.getUserId(), v.getUser().getName(), v.getPoint()))
                 .collect(Collectors.toList())
         );
     }
@@ -24,6 +24,7 @@ public class RewardHistoriesModel {
     @AllArgsConstructor
     static class RewardHistoryModel {
         private Long userId;
+        private String userName;
         private Integer point;
     }
 }

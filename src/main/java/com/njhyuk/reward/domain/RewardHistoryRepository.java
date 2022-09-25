@@ -13,5 +13,5 @@ public interface RewardHistoryRepository extends JpaRepository<RewardHistory, Lo
 
     Optional<RewardHistory> findFirstByUserIdOrderByIdDesc(Long userId);
 
-    List<RewardHistory> findByRewardedAtBetween(LocalDateTime startRewardedAt, LocalDateTime endRewardedAt);
+    List<RewardHistory> findByRewardedAtBetweenOrderByRewardedAt(LocalDateTime startRewardedAt, LocalDateTime endRewardedAt);
 }

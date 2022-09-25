@@ -8,6 +8,7 @@ spring:
         format_sql: true
         default_batch_fetch_size: 1000
         jdbc.batch_size: 100
+        hbm2ddl.import_files: init_data.sql
   h2:
     console:
       enabled: true

@@ -2,6 +2,7 @@ package com.njhyuk.reward.api;
 
 import com.njhyuk.reward.domain.Reward;
 import com.njhyuk.reward.domain.RewardHistory;
+import com.njhyuk.reward.domain.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -82,6 +83,7 @@ class RewardControllerTest extends AbstractRestDocControllerTest {
                 RewardHistory.builder()
                     .id(1L)
                     .userId(1L)
+                    .user(new User(1L, "김유저"))
                     .point(100)
                     .rewardedAt(LocalDateTime.of(2022, 10, 1, 0, 0, 0))
                     .consecutiveCount(1)
@@ -99,6 +101,7 @@ class RewardControllerTest extends AbstractRestDocControllerTest {
                 getDocumentResponse(),
                 responseFields(
                     fieldWithPath("rewardHistories[].userId").type(NUMBER).description("유저 번호"),
+                    fieldWithPath("rewardHistories[].userName").type(STRING).description("유저 이름"),
                     fieldWithPath("rewardHistories[].point").type(NUMBER).description("포인트")
                 )
             )
