@@ -1,3 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        default_batch_fetch_size: 1000
+        jdbc.batch_size: 100
+  h2:
+    console:
+      enabled: true
+  sql:
+    init:
+      mode: always
+
 reward:
   id: "reward"
   subject: "매일 00 시 00 분 00 초 선착순 10 명 100 포인트 지급!!!"

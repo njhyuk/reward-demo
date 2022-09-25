@@ -1,0 +1,10 @@
+### 보상 데이터 조회 API
+GET http://localhost:8080/v1/reward
+Accept: application/json
+
+### 보상 지급 API
+POST http://localhost:8080/v1/reward/apply
+Content-Type: application/x-www-form-urlencoded
+X-User-ID: 10
+
+###
