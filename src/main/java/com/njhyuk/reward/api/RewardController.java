@@ -3,7 +3,7 @@ package com.njhyuk.reward.api;
 import com.njhyuk.reward.api.v1.ApplyRewardModel;
 import com.njhyuk.reward.api.v1.RewardHistoriesModel;
 import com.njhyuk.reward.api.v1.RewardModel;
-import com.njhyuk.reward.domain.Reward;
+import com.njhyuk.reward.domain.RewardDetail;
 import com.njhyuk.reward.domain.RewardHistory;
 import com.njhyuk.reward.service.RewardService;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +24,8 @@ public class RewardController {
     private final RewardService rewardService;
 
     @GetMapping("/v1/reward")
-    public RewardModel getReward() {
-        Reward reword = rewardService.getReword();
+    public RewardModel getRewardDetail() {
+        RewardDetail reword = rewardService.getRewordDetail();
         return RewardModel.from(reword);
     }
 

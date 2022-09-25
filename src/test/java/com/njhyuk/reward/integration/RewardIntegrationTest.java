@@ -41,7 +41,7 @@ public class RewardIntegrationTest {
 
     @Test
     @DisplayName("선착순 보상 지급 동시성 통합 테스트")
-    void getReward() throws Exception {
+    void getRewardDetail() throws Exception {
         IntStream.range(0, threadCount)
             .forEach(e -> executorService.submit(() -> {
                     try {

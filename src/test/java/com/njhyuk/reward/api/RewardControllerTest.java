@@ -1,6 +1,6 @@
 package com.njhyuk.reward.api;
 
-import com.njhyuk.reward.domain.Reward;
+import com.njhyuk.reward.domain.RewardDetail;
 import com.njhyuk.reward.domain.RewardHistory;
 import com.njhyuk.reward.domain.User;
 import org.junit.jupiter.api.DisplayName;
@@ -24,9 +24,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class RewardControllerTest extends AbstractRestDocControllerTest {
     @Test
     @DisplayName("보상데이터 조회")
-    void getReward() throws Exception {
-        when(rewardService.getReword())
-            .thenReturn(new Reward("아이디", "제목", "설명"));
+    void getRewardDetail() throws Exception {
+        when(rewardService.getRewordDetail())
+            .thenReturn(new RewardDetail("아이디", "제목", "설명"));
 
         this.mockMvc.perform(
             get("/v1/reward")

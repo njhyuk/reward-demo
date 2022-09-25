@@ -3,7 +3,7 @@ package com.njhyuk.reward.service;
 import com.njhyuk.reward.common.configuration.RewardConfiguration;
 import com.njhyuk.reward.common.exception.ClosedRewardException;
 import com.njhyuk.reward.common.exception.DuplicatedRewardException;
-import com.njhyuk.reward.domain.Reward;
+import com.njhyuk.reward.domain.RewardDetail;
 import com.njhyuk.reward.domain.RewardCalculator;
 import com.njhyuk.reward.domain.RewardHistory;
 import com.njhyuk.reward.domain.RewardHistoryRepository;
@@ -24,8 +24,8 @@ public class RewardServiceImpl implements RewardService {
     private final RewardHistoryRepository rewardHistoryRepository;
 
     @Override
-    public Reward getReword() {
-        return new Reward(rewardConfiguration.getId(),
+    public RewardDetail getRewordDetail() {
+        return new RewardDetail(rewardConfiguration.getId(),
             rewardConfiguration.getSubject(),
             rewardConfiguration.getDescription());
     }
