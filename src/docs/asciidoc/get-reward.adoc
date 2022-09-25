@@ -1,0 +1,12 @@
+ifndef::snippet[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+
+=== 보상 데이터 조회
+
+- REQUEST
+include::{snippets}/reward/get-reward/http-request.adoc[]
+
+- RESPONSE
+include::{snippets}/reward/get-reward/response-body.adoc[]
+include::{snippets}/reward/get-reward/response-fields.adoc[]

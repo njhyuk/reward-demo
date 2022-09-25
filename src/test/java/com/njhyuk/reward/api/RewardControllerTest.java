@@ -33,7 +33,7 @@ class RewardControllerTest extends AbstractRestDocControllerTest {
         ).andExpect(
             status().isOk()
         ).andDo(
-            document("reward",
+            document("reward/get-reward",
                 getDocumentRequest(),
                 getDocumentResponse(),
                 responseFields(
@@ -64,7 +64,7 @@ class RewardControllerTest extends AbstractRestDocControllerTest {
         ).andExpect(
             status().isOk()
         ).andDo(
-            document("reward",
+            document("reward/apply-reward",
                 getDocumentRequest(),
                 getDocumentResponse(),
                 responseFields(
@@ -96,7 +96,7 @@ class RewardControllerTest extends AbstractRestDocControllerTest {
         ).andExpect(
             status().isOk()
         ).andDo(
-            document("reward",
+            document("reward/get-reward-history",
                 getDocumentRequest(),
                 getDocumentResponse(),
                 responseFields(

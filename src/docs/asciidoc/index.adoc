@@ -1,0 +1,14 @@
+= Contract Api
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+:snippets: ../../../build/generated-snippets
+
+
+include::get-reward.adoc[]
+include::apply-reward.adoc[]
+include::get-reward-history.adoc[]
+

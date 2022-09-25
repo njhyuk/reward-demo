@@ -1,0 +1,12 @@
+ifndef::snippet[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+
+=== 보상 지급
+
+- REQUEST
+include::{snippets}/reward/apply-reward/http-request.adoc[]
+
+- RESPONSE
+include::{snippets}/reward/apply-reward/response-body.adoc[]
+include::{snippets}/reward/apply-reward/response-fields.adoc[]
