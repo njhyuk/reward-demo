@@ -3,17 +3,18 @@ package com.njhyuk.reward.service;
 import com.njhyuk.reward.common.configuration.RewardConfiguration;
 import com.njhyuk.reward.common.exception.ClosedRewardException;
 import com.njhyuk.reward.common.exception.DuplicatedRewardException;
+import com.njhyuk.reward.domain.Reward;
 import com.njhyuk.reward.domain.RewardDetail;
 import com.njhyuk.reward.domain.RewardCalculator;
 import com.njhyuk.reward.domain.RewardHistory;
 import com.njhyuk.reward.domain.RewardHistoryRepository;
+import com.njhyuk.reward.domain.RewardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.Period;
 import java.util.List;
 
@@ -21,6 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RewardServiceImpl implements RewardService {
     private final RewardConfiguration rewardConfiguration;
+    private final RewardRepository rewardRepository;
     private final RewardHistoryRepository rewardHistoryRepository;
 
     @Override
@@ -33,11 +35,10 @@ public class RewardServiceImpl implements RewardService {
     @Override
     @Transactional
     public RewardHistory applyReword(LocalDateTime rewardDateTime, Long userId) {
-        Integer rewardCount = rewardHistoryRepository.countByRewardedAtBetween(
-            rewardDateTime.with(LocalTime.of(0, 0, 0)),
-            rewardDateTime.with(LocalTime.of(23, 59, 59))
-        );
-        if (rewardCount >= 10) {
+        Reward reward = rewardRepository.findByRewardDate(rewardDateTime.toLocalDate())
+            .orElse(new Reward(rewardDateTime.toLocalDate(), 0));
+
+        if (reward.getRewardCount() >= 10) {
             throw new ClosedRewardException("선착순 보상이 마감되었습니다.");
         }
 
@@ -56,6 +57,9 @@ public class RewardServiceImpl implements RewardService {
             .point(RewardCalculator.calculatePoint(consecutiveCount))
             .rewardedAt(rewardDateTime)
             .build();
+
+        reward.increaseCount();
+        rewardRepository.save(reward);
 
         return rewardHistoryRepository.save(rewardHistory);
     }
