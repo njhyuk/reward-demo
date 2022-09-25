@@ -1,11 +1,12 @@
 package com.njhyuk.reward.api;
 
 import com.njhyuk.reward.domain.Reward;
-import com.njhyuk.reward.domain.RewardBenefit;
+import com.njhyuk.reward.domain.RewardHistory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -46,7 +47,7 @@ class RewardControllerTest extends AbstractRestDocControllerTest {
     @Test
     @DisplayName("보상 지급")
     void applyReward() throws Exception {
-        RewardBenefit rewardBenefit = RewardBenefit.builder()
+        RewardHistory rewardHistory = RewardHistory.builder()
             .userId(10L)
             .point(100)
             .rewardedAt(LocalDateTime.now())
@@ -54,7 +55,7 @@ class RewardControllerTest extends AbstractRestDocControllerTest {
             .build();
 
         when(rewardService.applyReword(any(), anyLong()))
-            .thenReturn(rewardBenefit);
+            .thenReturn(rewardHistory);
 
         this.mockMvc.perform(
             post("/v1/reward/apply")
@@ -68,6 +69,37 @@ class RewardControllerTest extends AbstractRestDocControllerTest {
                 responseFields(
                     fieldWithPath("userId").type(NUMBER).description(10L),
                     fieldWithPath("point").type(NUMBER).description(100)
+                )
+            )
+        );
+    }
+
+    @Test
+    @DisplayName("보상 조회")
+    void getRewardHistories() throws Exception {
+        when(rewardService.getRewardHistories(any()))
+            .thenReturn(List.of(
+                RewardHistory.builder()
+                    .id(1L)
+                    .userId(1L)
+                    .point(100)
+                    .rewardedAt(LocalDateTime.of(2022, 10, 1, 0, 0, 0))
+                    .consecutiveCount(1)
+                    .build()
+            ));
+
+        this.mockMvc.perform(
+            get("/v1/reward/history")
+                .param("rewardDate", "2022-10-01")
+        ).andExpect(
+            status().isOk()
+        ).andDo(
+            document("reward",
+                getDocumentRequest(),
+                getDocumentResponse(),
+                responseFields(
+                    fieldWithPath("rewardHistories[].userId").type(NUMBER).description("유저 번호"),
+                    fieldWithPath("rewardHistories[].point").type(NUMBER).description("포인트")
                 )
             )
         );

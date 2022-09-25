@@ -14,10 +14,10 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @Builder
-@Table(name = "reward_benefit")
+@Table(name = "reward_benefits")
 @NoArgsConstructor
 @AllArgsConstructor
-public class RewardBenefit {
+public class RewardHistory {
     @Id
     @GeneratedValue
     private Long id;
@@ -26,5 +26,5 @@ public class RewardBenefit {
     private LocalDateTime rewardedAt;
     private Integer consecutiveCount;
 
-    public static final RewardBenefit EMPTY = new RewardBenefit(0L, 0L, 0, LocalDateTime.MIN, 0);
+    public static final RewardHistory EMPTY = new RewardHistory(0L, 0L, 0, LocalDateTime.MIN, 0);
 }
