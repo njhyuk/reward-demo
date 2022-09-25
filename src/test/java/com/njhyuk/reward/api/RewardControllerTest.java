@@ -45,14 +45,16 @@ class RewardControllerTest extends AbstractRestDocControllerTest {
     @Test
     @DisplayName("보상 지급")
     void applyReward() throws Exception {
+        LocalDateTime now = LocalDateTime.of(2022, 10, 1, 0, 1, 1);
+
         RewardBenefit rewardBenefit = RewardBenefit.builder()
             .userId(10L)
             .point(100)
-            .createdAt(LocalDateTime.of(2022, 10, 1, 0, 1, 1))
+            .createdAt(now)
             .consecutiveCount(1)
             .build();
 
-        when(rewardService.applyReword(10L))
+        when(rewardService.applyReword(now, 10L))
             .thenReturn(rewardBenefit);
 
         this.mockMvc.perform(

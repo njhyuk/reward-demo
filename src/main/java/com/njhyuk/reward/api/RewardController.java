@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequiredArgsConstructor
 public class RewardController {
@@ -24,7 +26,7 @@ public class RewardController {
 
     @PostMapping("/v1/reward/apply")
     public RewardBenefitModel applyReward(@RequestHeader(name = "X-USER-ID") Long userId) {
-        RewardBenefit rewardBenefit = rewardService.applyReword(userId);
+        RewardBenefit rewardBenefit = rewardService.applyReword(LocalDateTime.now(), userId);
         return RewardBenefitModel.from(rewardBenefit);
     }
 }
